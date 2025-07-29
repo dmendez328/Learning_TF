@@ -4,6 +4,8 @@ Welcome to the **TensorFlow Learning Series** — a hands-on project-based curri
 
 This repository contains **40 structured projects** across **6 progressive phases**, each focusing on practical applications and deepening your understanding of key machine learning and deep learning concepts using TensorFlow.
 
+In order to work through this repository, one needs a basic understanding of coding and algorithms, accompanied with prior Python experience. The first half of the projects (1-20) can be done on a CPU, but the second half (21-40) are more effectively run with a GPU. Using Google Colab is the best option, but make sure to switch the runtime type from a CPU to a GPU. 
+
 ---
 
 ## Project Breakdown
