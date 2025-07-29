@@ -1,4 +1,4 @@
-# 🧠 Learn TensorFlow through 40 Projects
+# Learn TensorFlow through 40 Projects
 
 Welcome to the **TensorFlow Learning Series** — a hands-on project-based curriculum designed to help you master TensorFlow, neural networks, and deep learning fundamentals, one project at a time.
 
@@ -6,9 +6,9 @@ This repository contains **40 structured projects** across **6 progressive phase
 
 ---
 
-## 📚 Project Breakdown
+## Project Breakdown
 
-### 🔰 PHASE 1: Fundamentals of TensorFlow & ML (Projects 1–10)
+### PHASE 1: Fundamentals of TensorFlow & ML (Projects 1–10)
 Get started with TensorFlow syntax, loss functions, optimizers, data pipelines, and visualization tools.
 
 | # | Project | Focus |
@@ -26,7 +26,7 @@ Get started with TensorFlow syntax, loss functions, optimizers, data pipelines, 
 
 ---
 
-### 📈 PHASE 2: Neural Network Design & Real Data (Projects 11–20)
+### PHASE 2: Neural Network Design & Real Data (Projects 11–20)
 Build and tune dense neural networks on structured and image data.
 
 | # | Project | Focus |
@@ -44,7 +44,7 @@ Build and tune dense neural networks on structured and image data.
 
 ---
 
-### 🧠 PHASE 3: CNNs for Vision (Projects 21–26)
+### PHASE 3: CNNs for Vision (Projects 21–26)
 Learn how to build CNNs and process images for classification and localization.
 
 | # | Project | Focus |
@@ -58,7 +58,7 @@ Learn how to build CNNs and process images for classification and localization.
 
 ---
 
-### ⏳ PHASE 4: RNNs, LSTMs & Sequence Modeling (Projects 27–32)
+### PHASE 4: RNNs, LSTMs & Sequence Modeling (Projects 27–32)
 Learn how to process sequential data like text and time series.
 
 | # | Project | Focus |
@@ -72,7 +72,7 @@ Learn how to process sequential data like text and time series.
 
 ---
 
-### 💡 PHASE 5: Autoencoders, GANs & Embeddings (Projects 33–36)
+### PHASE 5: Autoencoders, GANs & Embeddings (Projects 33–36)
 Dive into generative models, embeddings, and unsupervised learning.
 
 | # | Project | Focus |
@@ -84,7 +84,7 @@ Dive into generative models, embeddings, and unsupervised learning.
 
 ---
 
-### 🔬 PHASE 6: Advanced Topics & Research (Projects 37–40)
+### PHASE 6: Advanced Topics & Research (Projects 37–40)
 Explore cutting-edge research tools and replicate advanced architectures.
 
 | # | Project | Focus |
@@ -96,7 +96,7 @@ Explore cutting-edge research tools and replicate advanced architectures.
 
 ---
 
-## 🧰 Neural Network Design Cheatsheet (Key Concepts)
+## Neural Network Design Cheatsheet (Key Concepts)
 
 **Activation Functions**: `ReLU`, `tanh`, `sigmoid`, `softmax`, `swish`  
 **Common Layers**: `Dense`, `Conv2D`, `LSTM`, `Embedding`, `BatchNormalization`, `Dropout`, `Flatten`  
@@ -106,12 +106,3 @@ Explore cutting-edge research tools and replicate advanced architectures.
 **Metrics**: `accuracy`, `precision`, `recall`, `AUC`  
 **TF APIs**: Sequential, Functional, Subclassing  
 **Tools**: `tf.data`, TensorBoard, SavedModel, `@tf.function`
-
----
-
-## 🚀 Getting Started
-
-### Clone the Repository
-```bash
-git clone https://github.com/yourusername/tensorflow-projects.git
-cd tensorflow-projects
