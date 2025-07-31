@@ -1,10 +1,10 @@
-# Learn TensorFlow through 40 Projects
+# Learn TensorFlow through 35 Projects
 
 Welcome to the **TensorFlow Learning Series** — a hands-on project-based curriculum designed to help you master TensorFlow, neural networks, and deep learning fundamentals, one project at a time.
 
-This repository contains **40 structured projects** across **6 progressive phases**, each focusing on practical applications and deepening your understanding of key machine learning and deep learning concepts using TensorFlow.
+This repository contains **35 structured projects** across different phases, each focusing on practical applications and deepening your understanding of key machine learning and deep learning concepts using TensorFlow.
 
-In order to work through this repository, one needs a basic understanding of coding and algorithms, accompanied with prior Python experience. The first half of the projects (1-20) can be done on a CPU, but the second half (21-40) are more effectively run with a GPU. Using Google Colab is the best option, but make sure to switch the runtime type from a CPU to a GPU. 
+In order to work through this repository, one needs a basic understanding of coding and algorithms, accompanied with prior Python experience. The first portion of the projects (1-20) can be done on a CPU, but the rest are more effectively run with a GPU. Using Google Colab is the best option, but make sure to switch the runtime type from a CPU to a GPU. 
 
 ---
 
@@ -74,27 +74,22 @@ Learn how to process sequential data like text and time series.
 
 ---
 
-### PHASE 5: Autoencoders, GANs & Embeddings (Projects 33–36)
+### PHASE 5: Autoencoders, GANs & Embeddings (Projects 33–34)
 Dive into generative models, embeddings, and unsupervised learning.
 
 | # | Project | Focus |
 |--:|:--------|:------|
 |33 | Denoising Autoencoder | Clean image reconstruction |
 |34 | Variational Autoencoder (VAE) | Latent space sampling, probabilistic modeling |
-|35 | GAN for Fashion MNIST | Generator, Discriminator, adversarial loss |
-|36 | Word Embeddings from Scratch | Word2Vec-style skip-gram model |
 
 ---
 
-### PHASE 6: Advanced Topics & Research (Projects 37–40)
+### PHASE 6: Advanced Topics & Research 
 Explore cutting-edge research tools and replicate advanced architectures.
 
 | # | Project | Focus |
 |--:|:--------|:------|
-|37 | Multi-Modal Deep Learning | Combine image and text inputs |
-|38 | Transformer for Text Classification | Implement small Transformer from scratch |
-|39 | BERT Fine-Tuning | HuggingFace + TF for NLP classification |
-|40 | Research Replication Project | Reimplement recent deep learning paper in TensorFlow |
+|35 | Research Replication Project | Reimplement recent deep learning paper in TensorFlow |
 
 ---
 
