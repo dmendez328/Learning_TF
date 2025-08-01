@@ -89,7 +89,7 @@ Explore cutting-edge research tools and replicate advanced architectures.
 
 | # | Project | Focus |
 |--:|:--------|:------|
-|35 | Stock Prediction Project |
+|35 | Stock Prediction Project | Create a Neural Network to help predict stock prices |
 
 ---
 
