@@ -89,7 +89,7 @@ Explore cutting-edge research tools and replicate advanced architectures.
 
 | # | Project | Focus |
 |--:|:--------|:------|
-|35 | Research Replication Project | Reimplement recent deep learning paper in TensorFlow |
+|35 | Stock Prediction Project |
 
 ---
 
