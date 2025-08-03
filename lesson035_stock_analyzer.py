@@ -2,24 +2,58 @@ import tensorflow as tf
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+
+# Note:
+# Stock market is open ~ 250 days a year
+# Market is open for 6.5 hours; on the 15 min timeframe, 26 bars
+# For 5 years, open market 250 days a year for 6.5 hours, 15 min timeframe (26 bars a day) -> 32500 bars
+# Most historical price APIs have data for companies going back 5 years
 
 ''' Generate synthetic "stock" time series data '''
 
 # Generate data
 
-np.random.seed(42) # For future reolication
-time = np.arange(0, 1500) # The timestep range from a to b
-trend = 0.05 * time # The linear upward trend over the times
-seasonal = 10 * np.sin(0.1 * time) # A repeating sin wave, modeling seasonal patterns
-noise = np.random.normal(scale=2, size=len(time)) # Add gaussian noise to simulate measurment errors
-series = trend + seasonal + noise # Putting everything together
+np.random.seed(42)
 
-# Visualize the data via plot
-plt.figure(figsize=(10, 4))
+# 1. Time
+time = np.arange(0, 6000)
+
+# 2. Exponential base trend
+base_price = 50  # starting price
+growth_rate = 0.0006  # tweakable
+trend = base_price * np.exp(growth_rate * time)
+
+# 3. Seasonal noise (optional)
+seasonal = 10 * np.sin(0.1 * time)
+
+# 4. Gaussian noise
+noise = np.random.normal(scale=2, size=len(time))
+
+# 5. Event: long drawdowns (corrections)
+event_noise = np.zeros(len(time))
+
+num_downtrends = 35
+max_duration = 150
+
+for _ in range(num_downtrends):
+    start = np.random.randint(0, len(time) - max_duration)
+    duration = np.random.randint(40, max_duration) # Change this to make the downtrends last longer
+    slope = -np.random.uniform(1, 9) # Change this to make the downtrend slopes more dramatic (Bigger Drops)
+
+    for t in range(duration):
+        event_noise[start + t] += slope * t  # gradual drawdown
+
+# 6. Final synthetic series
+series = trend + seasonal + noise + event_noise
+
+# 7. Plot
+plt.figure(figsize=(14, 5))
 plt.plot(time, series)
-plt.title("Synthetic Stock Price Series")
+plt.title("Synthetic Stock Series: Exponential Growth + Corrections (MSFT-style)")
 plt.xlabel("Time")
 plt.ylabel("Price")
+plt.grid(True)
 plt.show()
 
 # Create sequence-tosequence dataset
@@ -140,11 +174,26 @@ df = pd.DataFrame({
 })
 
 print(len(df))
+print(df.head())
+
+# Normalizing dataframe
+
+# Normalization scalars have to be different
+df_scalar = MinMaxScaler() # Type of normalization, only for df
+df_scaled = df_scalar.fit_transform(df) # Normalize it
+df_scaled = pd.DataFrame(df_scaled, columns=df.columns) # Turn from numpy to pandas, because type converted after normalization
+
+y_scalar = MinMaxScaler() # Type of normalization, only for y
+y = y_scalar.fit_transform(np.array(y).reshape(-1, 1)) # Normalize y
+
+print(len(df_scaled))
+print(df_scaled.head())
+print(type(df_scaled))
 
 X = []
 
-for i in range(len(df) - input_steps):
-  window = df.iloc[i:i + input_steps].values # Shape = (30, 5)
+for i in range(len(df_scaled) - input_steps):
+  window = df_scaled.iloc[i:i + input_steps].values # Shape = (30, 5)
   X.append(window)
 
 if len(y) > len(X):
@@ -162,37 +211,45 @@ print(len(y))
 # Build model
 
 model = tf.keras.Sequential([
-    
+
     tf.keras.layers.Input(shape=(input_steps, 5)), # (Batch Size, 30, 5)
 
     # CNN Block
 
     # Layer 1
     tf.keras.layers.Conv1D(filters=32, kernel_size=3, activation='relu', padding='same'), # (Batch Size, 30, 32)
+    tf.keras.layers.BatchNormalization(),
     tf.keras.layers.MaxPooling1D(pool_size=3, strides=1, padding='same'), # (Batch Size, 30, 32)
 
     # Layer 2
     tf.keras.layers.Conv1D(filters=64, kernel_size=3, activation='relu', padding='same'), # (Batch Size, 30, 64)
-    tf.keras.layers.MaxPooling1D(pool_size=3, strides=2, padding='same'), # (Batch Size, 15, 64)
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.MaxPooling1D(pool_size=3, strides=1, padding='same'), # (Batch Size, 30, 64)
+
+    # Layer 3
+    tf.keras.layers.Conv1D(filters=128, kernel_size=3, activation='relu', padding='same'), # (Batch Size, 15, 128
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.MaxPooling1D(pool_size=3, strides=2, padding='same'), # (Batch Size, 15, 128)
 
     # LSTM Block
 
     # Layer 1
-    tf.keras.layers.LSTM(units=128, return_sequences=True), # (Batch Size, 15, 128)
+    tf.keras.layers.Bidirectional(
+      tf.keras.layers.LSTM(units=128, return_sequences=True)
+    ), # (Batch Size, 15, 256) [256 because 128 units in this LSTM, back and forth]
 
     # Layer 2
-    tf.keras.layers.LSTM(units=64, return_sequences=True), # (Batch Size, 15, 64)
-
-    # Flatten
-    tf.keras.layers.Flatten(), # (Batch Size, 960)
+    tf.keras.layers.Bidirectional(
+      tf.keras.layers.LSTM(units=64, return_sequences=False)
+    ), # (Batch Size, 15, 128) [128 because 64 units in this LSTM, back and forth]
 
     # Dense Block
 
     # Layer 1
-    tf.keras.layers.Dense(units=256, activation='relu'), # (Batch Size, 256)
+    tf.keras.layers.Dense(units=64, activation='relu'), # (Batch Size, 64)
 
     # Layer 2
-    tf.keras.layers.Dense(units=64, activation='relu'), # (Batch Size, 64)
+    tf.keras.layers.Dense(units=32, activation='relu'), # (Batch Size, 32)
 
     # Layer 3
     tf.keras.layers.Dense(units=16, activation='relu'), # (Batch Size, 16)
@@ -203,12 +260,13 @@ model = tf.keras.Sequential([
 ])
 
 # Compile the model / Model summary
-model.compile(optimizer='adam', loss='mse', metrics=['mae', 'mape'])
+model.compile(optimizer='adam', loss='mse', metrics=['mae'])
 model.summary()
 
 ''' Train the model '''
 
-split = int(0.8 * len(X))
+# Split the data to training and testing, 80% training
+split = int(0.7 * len(X))
 X_train, X_test = X[:split], X[split:]
 y_train, y_test = y[:split], y[split:]
 
@@ -222,4 +280,4 @@ print(type(y_train))
 print(type(X_test))
 print(type(y_test))
 
-history = model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_test, y_test))
+history = model.fit(X_train, y_train, epochs=30, batch_size=32, validation_data=(X_test, y_test))
